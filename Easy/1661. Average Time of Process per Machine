@@ -1,0 +1,7 @@
+# Write your MySQL query statement below
+SELECT machine_id, ROUND(AVG(time_taken), 3) AS processing_time
+FROM (SELECT machine_id, process_id, activity_type, 
+        MAX(timestamp) OVER (PARTITION BY machine_id, process_id) 
+        - MIN(timestamp) OVER (PARTITION BY machine_id, process_id) AS time_taken
+        FROM Activity) AS TEMP
+GROUP BY machine_id;
